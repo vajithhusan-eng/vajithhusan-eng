@@ -1,55 +1,70 @@
 # Vajith Husan
 
-I build systems that are honest about what they cannot do. Agentic AI, browser automation, and quantitative research — mostly Dart/Flutter and Python.
+I build systems that are honest about what they cannot do. Agentic AI, browser
+automation, and quantitative research — mostly Dart/Flutter and Python.
 
-Every project below is self-contained: its own stack, its own test suite, its own build. They share a repository, not a codebase.
+Each repository below is standalone: its own stack, its own test suite, its own build,
+its own CI. Nothing here is a folder inside someone else's monolith.
 
 ---
 
-## Agora — a council of AIs that argues until the answer holds
+## [Agora](https://github.com/vajithhusan-eng/agora) — a council of AIs that argues until the answer holds
 
-A native Linux desktop app that gives several language models a real browser tab each, then has them cross-examine each other under a strict machine-readable protocol the orchestrator validates before it dispatches anything. Free text never triggers an action.
+A native Linux desktop app that gives several language models a real browser tab each,
+then has them cross-examine each other under a strict machine-readable protocol the
+orchestrator validates before it dispatches anything. Free text never triggers an action.
 
-- **Drives real Chrome over raw CDP.** Each agent works a real site in a real tab — no API wrappers, no Puppeteer, no Playwright.
-- **Verbatim or it does not count.** Every response is stored as raw text, raw HTML, a screenshot, and a content hash, so any later mutation of the record is provable.
-- **290 tests passing**, `dart analyze` clean, 42/42 sandbox checks against a real Chrome.
-- Ships as a 12 MB AppImage — plus a portable tarball for machines where FUSE is unavailable.
+- **Drives real Chrome over raw CDP.** Each agent works a real site in a real tab — no
+  API wrappers, no Puppeteer, no Playwright.
+- **Verbatim or it does not count.** Every response is stored as raw text, raw HTML, a
+  screenshot, and a content hash, so any later mutation of the record is provable.
+- **296 tests passed / 1 skipped**, `flutter analyze` clean, `tool/cpp_lint.sh` PASS.
+- Ships as a 12 MB AppImage, plus a portable tarball for hosts where FUSE is
+  unavailable — an AppImage that cannot mount is not a deliverable.
 - Flutter 3.47 · Dart 3.13 · raw CDP · SQLite (drift, schema v3 with FTS5) · Riverpod
 
-**[Source →](https://github.com/vajithhusan-eng/workshop/tree/master/projects/agora)**
+## [RGX](https://github.com/vajithhusan-eng/rgx) — a research harness built to refuse to trade
 
-## RGX — a research harness built to refuse to trade
+A quantitative research harness whose central invariant is that it **can return
+nothing**. A planted-edge run and a zero-edge control are reported side by side, and the
+null run is a first-class test rather than an afterthought.
 
-A quantitative research pipeline whose central invariant is that **it can return nothing**. Before an edge is reported, it has to survive a control run with the edge deliberately removed — and the same pipeline that finds a planted edge must come up empty on the null.
+- **47 invariant tests**, plus **6 null-control tests** that only run with `RGX_SLOW=1`.
+  A plain `pytest` reporting `47 passed, 6 skipped` has not exercised the invariant.
+- It is not a trading system: no broker, no capital, no live data.
+- Python · pandas · scikit-learn · LightGBM
 
-- A zero-edge control and a planted-edge run are both reported, honestly and side by side.
-- **47 invariant tests**, plus **6 null-control tests gated behind `RGX_SLOW=1`** — the control is the one test worth never letting quietly skip.
-- Python 3.14 · pandas · scikit-learn
+## [OMNIVEST](https://github.com/vajithhusan-eng/omnivest) — market forensics
 
-## OMNIVEST — market forensics
+An API and a client for post-trade forensics: they price your execution decisions after
+the fact instead of asking you how you felt about them.
 
-An API and client for post-trade forensics: it prices execution decisions after the fact instead of asking you how you felt about them.
-
-- **143 unit checks and 168 API checks.**
+- **143 unit checks and 168 API checks**, plus **165** frontend tests.
 - Advice is blocked by default — it reports and prices, it does not recommend.
-- Python/FastAPI service plus a Flutter web terminal.
+- When real bars are unavailable the response says `NO_DATA`. Plausible-looking numbers
+  are never invented to fill a gap.
+- Python/FastAPI service (`:8123`) + Flutter web terminal (`:8081`).
 
-## CleanTube — an ad-avoidance study for Android
+## [CleanTube](https://github.com/vajithhusan-eng/cleantube) — an ad-avoidance study for Android
 
-A design study into requesting pages without ads rather than stripping them after the fact.
+A design study into requesting pages without ads rather than stripping them afterwards.
 
-- **Design only, and it says so** — zero lines of shipping code, and the M0 feasibility gate has not been run.
-- Recorded as an open question with the gate that would settle it, not as a finished product.
+- **Design only, and it says so** — zero lines of shipping code, and the M0 feasibility
+  gate has not been run.
+- Recorded as an open question with the gate that would settle it, not as a finished
+  product.
 
 ---
 
 ## How I work
 
-- **Documentation states what is missing.** Each project carries a status file that is regenerated by running its tests, not by trusting commit messages.
-- **Claims are checkable.** Every project has a documented, reproducible verification command — and where something is unbuilt, blocked, or unverified, that is written down next to it.
-- **The gate fails closed.** A build check rejects a project whose documents are incomplete or whose status describes a tree that no longer exists.
-
-[Browse the source →](https://github.com/vajithhusan-eng)
+- **Documentation states what is missing.** Each repository carries a status file that
+  is regenerated by running its tests, not by trusting commit messages.
+- **Claims are checkable.** Every project has a documented, reproducible verification
+  command — and where something is unbuilt, blocked, or unverified, that is written
+  down next to it.
+- **The gate fails closed.** Each repository rejects its own bad work: a plan-only
+  project's CI fails if source code ever appears without the plan being updated.
 
 ---
 
