@@ -3,70 +3,90 @@
 I build systems that are honest about what they cannot do. Agentic AI, browser
 automation, and quantitative research — mostly Dart/Flutter and Python.
 
-Each repository below is standalone: its own stack, its own test suite, its own build,
-its own CI. Nothing here is a folder inside someone else's monolith.
+Everything is in one place: **[WORKSHOP](https://github.com/vajithhusan-eng/workshop)**
+— four self-contained products, each with its own stack, its own test suite, its
+own release path, and an agent-authoring contract they all obey. Nothing is a demo.
+Every number below is the output of a command you can re-run yourself.
+
+[![Test](https://github.com/vajithhusan-eng/workshop/actions/workflows/test.yml/badge.svg)](https://github.com/vajithhusan-eng/workshop/actions/workflows/test.yml)
+[![Tests](https://img.shields.io/badge/tests-651%20passing-brightgreen)](https://github.com/vajithhusan-eng/workshop#verification)
 
 ---
 
-## [Agora](https://github.com/vajithhusan-eng/agora) — a council of AIs that argues until the answer holds
+## [Agora](https://github.com/vajithhusan-eng/workshop/tree/master/projects/agora) — a council of AIs that argues until the answer holds
 
-A native Linux desktop app that gives several language models a real browser tab each,
-then has them cross-examine each other under a strict machine-readable protocol the
-orchestrator validates before it dispatches anything. Free text never triggers an action.
+A native Linux desktop app that gives several language models a real browser tab
+each, then has them cross-examine each other under a strict machine-readable
+protocol the orchestrator validates before it dispatches anything. Free text never
+triggers an action.
 
-- **Drives real Chrome over raw CDP.** Each agent works a real site in a real tab — no
-  API wrappers, no Puppeteer, no Playwright.
-- **Verbatim or it does not count.** Every response is stored as raw text, raw HTML, a
-  screenshot, and a content hash, so any later mutation of the record is provable.
-- **296 tests passed / 1 skipped**, `flutter analyze` clean, `tool/cpp_lint.sh` PASS.
-- Ships as a 12 MB AppImage, plus a portable tarball for hosts where FUSE is
-  unavailable — an AppImage that cannot mount is not a deliverable.
-  **[Download v0.1.0 →](https://github.com/vajithhusan-eng/agora/releases/tag/v0.1.0)**
+- **Drives real Chrome over raw CDP.** Each agent works a real site in a real tab —
+  no API wrappers, no Puppeteer, no Playwright.
+- **Verbatim or it does not count.** Every response is stored as raw text, raw HTML,
+  a screenshot and a content hash, so any later mutation of the record is provable.
+- **296 tests passed / 1 skipped**, `dart analyze` clean, and a `clang++` lint over
+  the native runner — `linux/runner/*.cc` is checked by CI rather than by nobody.
+- Ships as a 12 MB AppImage **and** a portable tarball, because an AppImage that
+  cannot mount on a locked-down host is not a deliverable.
+  **[Download v0.1.0 →](https://github.com/vajithhusan-eng/workshop/releases/tag/v0.1.0)**
 - Flutter 3.47 · Dart 3.13 · raw CDP · SQLite (drift, schema v3 with FTS5) · Riverpod
 
-## [RGX](https://github.com/vajithhusan-eng/rgx) — a research harness built to refuse to trade
+## [RGX](https://github.com/vajithhusan-eng/workshop/tree/master/projects/rgx) — a research harness built to refuse to trade
 
 A quantitative research harness whose central invariant is that it **can return
-nothing**. A planted-edge run and a zero-edge control are reported side by side, and the
-null run is a first-class test rather than an afterthought.
+nothing**. A planted-edge run and a zero-edge control are reported side by side, and
+the null run is a first-class test rather than an afterthought.
 
-- **47 invariant tests**, plus **6 null-control tests** that only run with `RGX_SLOW=1`.
-  A plain `pytest` reporting `47 passed, 6 skipped` has not exercised the invariant.
+- **47 invariant tests**, plus **6 null-control tests** that only run with
+  `RGX_SLOW=1`. A plain `pytest` reporting `47 passed, 6 skipped` has not exercised
+  the invariant — quoting that number as proof is quoting a test that never ran.
 - It is not a trading system: no broker, no capital, no live data.
 - Python · pandas · scikit-learn · LightGBM
 
-## [OMNIVEST](https://github.com/vajithhusan-eng/omnivest) — market forensics
+## OMNIVEST — market forensics
 
-An API and a client for post-trade forensics: they price your execution decisions after
-the fact instead of asking you how you felt about them.
+An API and a client for post-trade forensics: they price your execution decisions
+after the fact instead of asking you how you felt about them.
 
-- **143 unit checks and 168 API checks**, plus **165** frontend tests.
+- [FastAPI service](https://github.com/vajithhusan-eng/workshop/tree/master/backend)
+  (`:8123`) + [Flutter web terminal](https://github.com/vajithhusan-eng/workshop/tree/master/frontend)
+  (`:8081`), and **143 unit checks** plus **165** frontend tests.
 - Advice is blocked by default — it reports and prices, it does not recommend.
-- When real bars are unavailable the response says `NO_DATA`. Plausible-looking numbers
-  are never invented to fill a gap.
-- Python/FastAPI service (`:8123`) + Flutter web terminal (`:8081`).
+- When real bars are unavailable the response says `NO_DATA`. Plausible-looking
+  numbers are never invented to fill a gap.
 
-## [CleanTube](https://github.com/vajithhusan-eng/cleantube) — an ad-avoidance study for Android
+## [CleanTube](https://github.com/vajithhusan-eng/workshop/tree/master/projects/cleantube) — an ad-avoidance study for Android
 
-A design study into requesting pages without ads rather than stripping them afterwards.
+A design study into requesting pages without ads rather than stripping them
+afterwards.
 
-- **Design only, and it says so** — zero lines of shipping code, and the M0 feasibility
-  gate has not been run.
+- **Design only, and it says so** — zero lines of shipping code, and the M0
+  feasibility gate has not been run.
 - Recorded as an open question with the gate that would settle it, not as a finished
-  product.
+  product. The licensing constraint (a GPL blocklist source cannot be bundled) is
+  written down as a budgeted cost rather than discovered late.
 
 ---
 
 ## How I work
 
-- **Documentation states what is missing.** Each repository carries a status file that
-  is regenerated by running its tests, not by trusting commit messages.
-- **Claims are checkable.** Every project has a documented, reproducible verification
-  command — and where something is unbuilt, blocked, or unverified, that is written
-  down next to it.
-- **The gate fails closed.** Each repository rejects its own bad work: a plan-only
-  project's CI fails if source code ever appears without the plan being updated.
+- **[`PROJECT-STANDARD.md`](https://github.com/vajithhusan-eng/workshop/blob/master/PROJECT-STANDARD.md)
+  is the contract.** Every project carries the same document set, and
+  `make check` fails if one is missing or malformed — the same gate a human and an
+  agent both have to pass.
+- **Documentation states what is missing.** Each project has a status file that is
+  regenerated by *running its tests*, never by trusting a commit message or the
+  previous version of itself.
+- **Claims are checkable.** Every project has a reproducible verification command.
+  Where something is unbuilt, blocked or unverified, that is written next to the
+  claim rather than left out.
+- **CI runs the real suites, not a lint of them.** Every push runs Agora's analyzer
+  and tests and its native lint, RGX's invariants *and* its slow null control,
+  OMNIVEST's backend checks and its Flutter tests, plus the document gates.
 
 ---
 
 **Vajith Husan** · [vajithhusan2510@gmail.com](mailto:vajithhusan2510@gmail.com)
+
+<sub>Agora, RGX, OMNIVEST and CleanTube are also published as standalone repositories
+if you want one without the rest.</sub>
