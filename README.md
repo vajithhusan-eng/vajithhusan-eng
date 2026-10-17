@@ -21,6 +21,7 @@ orchestrator validates before it dispatches anything. Free text never triggers a
 - **296 tests passed / 1 skipped**, `flutter analyze` clean, `tool/cpp_lint.sh` PASS.
 - Ships as a 12 MB AppImage, plus a portable tarball for hosts where FUSE is
   unavailable — an AppImage that cannot mount is not a deliverable.
+  **[Download v0.1.0 →](https://github.com/vajithhusan-eng/agora/releases/tag/v0.1.0)**
 - Flutter 3.47 · Dart 3.13 · raw CDP · SQLite (drift, schema v3 with FTS5) · Riverpod
 
 ## [RGX](https://github.com/vajithhusan-eng/rgx) — a research harness built to refuse to trade
